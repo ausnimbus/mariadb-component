@@ -20,10 +20,16 @@ extra_tests() {
 
   info "Testing MySQL set"
   container_exec "mysql --host $(container_ip) -utest -ptest test -e 'CREATE TABLE tbl (col1 VARCHAR(20), col2 VARCHAR(20))';"
+
+  info "Testing MySQL insert"
   container_exec "mysql --host $(container_ip) -utest -ptest test -e 'INSERT INTO tbl VALUES (\"foo1\", \"bar1\")';"
   container_exec "mysql --host $(container_ip) -utest -ptest test -e 'INSERT INTO tbl VALUES (\"foo2\", \"bar2\")';"
   container_exec "mysql --host $(container_ip) -utest -ptest test -e 'INSERT INTO tbl VALUES (\"foo3\", \"bar3\")';"
+
+  info "Testing MySQL select"
   container_exec "mysql --host $(container_ip) -utest -ptest test -e 'SELECT * FROM tbl';"
+
+  info "Testing MySQL drop"
   container_exec "mysql --host $(container_ip) -utest -ptest test -e 'DROP TABLE tbl';"
 
 }
