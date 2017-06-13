@@ -15,13 +15,16 @@ CONTAINER_ARGS="-e MYSQL_ROOT_PASSWORD=ausnimbus -e MYSQL_DATABASE=test -e MYSQL
 
 extra_tests() {
 
+  info "Sleep for a bit while MariaDB boots up.."
+  sleep 60
+
   info "Testing MySQL set"
-  container_exec "mysql --host $(container_ip) -utest -ptest 'CREATE TABLE tbl (col1 VARCHAR(20), col2 VARCHAR(20)) test;'"
-  container_exec "mysql --host $(container_ip) -utest -ptest 'INSERT INTO tbl VALUES (\"foo1\", \"bar1\") test;'"
-  container_exec "mysql --host $(container_ip) -utest -ptest 'INSERT INTO tbl VALUES (\"foo2\", \"bar2\") test;'"
-  container_exec "mysql --host $(container_ip) -utest -ptest 'INSERT INTO tbl VALUES (\"foo3\", \"bar3\") test;'"
-  container_exec "mysql --host $(container_ip) -utest -ptest 'SELECT * FROM tbl test;'"
-  container_exec "mysql --host $(container_ip) -utest -ptest 'DROP TABLE tbl test;'"
+  container_exec "mysql --host $(container_ip) -utest -ptest test -e 'CREATE TABLE tbl (col1 VARCHAR(20), col2 VARCHAR(20))';"
+  container_exec "mysql --host $(container_ip) -utest -ptest test -e 'INSERT INTO tbl VALUES (\"foo1\", \"bar1\")';"
+  container_exec "mysql --host $(container_ip) -utest -ptest test -e 'INSERT INTO tbl VALUES (\"foo2\", \"bar2\")';"
+  container_exec "mysql --host $(container_ip) -utest -ptest test -e 'INSERT INTO tbl VALUES (\"foo3\", \"bar3\")';"
+  container_exec "mysql --host $(container_ip) -utest -ptest test -e 'SELECT * FROM tbl';"
+  container_exec "mysql --host $(container_ip) -utest -ptest test -e 'DROP TABLE tbl';"
 
 }
 
