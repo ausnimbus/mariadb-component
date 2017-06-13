@@ -1,0 +1,11 @@
+#!/bin/bash
+
+NAME="mariadb"
+DISPLAY_NAME="Mariadb"
+TYPE="component"
+VARIANTS=${VARIANTS:-"default"}
+VERSIONS=${VERSIONS:-"10.1"}
+
+DOCKER_PUSH=${DOCKER_PUSH:-"false"}
+
+source $(readlink -zf $(dirname "${BASH_SOURCE[0]}"))/../common/hack/run

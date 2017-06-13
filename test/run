@@ -1,0 +1,29 @@
+#!/bin/bash -e
+#
+# The 'run' performs a simple test that verifies that image
+#
+# IMAGE_NAME specifies a name of the candidate image used for testing.
+# The image has to be available before this script is executed.
+#
+
+IMAGE_NAME=${IMAGE_NAME-ausnimbus/mariadb:latest}
+VERSION=${VERSION-"latest"}
+
+VERSION_COMMAND="mysqld --version"
+
+CONTAINER_ARGS="-e MYSQL_ROOT_PASSWORD=ausnimbus -e MYSQL_DATABASE=test -e MYSQL_USER=test -e MYSQL_PASSWORD=test"
+
+extra_tests() {
+
+  info "Testing MySQL set"
+  container_exec "mysql --host $(container_ip) -utest -ptest 'CREATE TABLE tbl (col1 VARCHAR(20), col2 VARCHAR(20)) test;'"
+  container_exec "mysql --host $(container_ip) -utest -ptest 'INSERT INTO tbl VALUES (\"foo1\", \"bar1\") test;'"
+  container_exec "mysql --host $(container_ip) -utest -ptest 'INSERT INTO tbl VALUES (\"foo2\", \"bar2\") test;'"
+  container_exec "mysql --host $(container_ip) -utest -ptest 'INSERT INTO tbl VALUES (\"foo3\", \"bar3\") test;'"
+  container_exec "mysql --host $(container_ip) -utest -ptest 'SELECT * FROM tbl test;'"
+  container_exec "mysql --host $(container_ip) -utest -ptest 'DROP TABLE tbl test;'"
+
+}
+
+test_dir="$(readlink -zf $(dirname "${BASH_SOURCE[0]}"))"
+source ${test_dir}/../common/tests/component
