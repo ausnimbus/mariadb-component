@@ -1,2 +1,12 @@
 #!/bin/bash
 source cgroup-limits
+
+export MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-}
+export MYSQL_DATABASE=${MYSQL_DATABASE:-}
+export MYSQL_USER=${MYSQL_USER:-}
+export MYSQL_PASSWORD=${MYSQL_PASSWORD:-}
+
+# Fall back to random root password
+if [[ -z "$MYSQL_ROOT_PASSWORD" ]]; then
+  export MYSQL_RANDOM_ROOT_PASSWORD="yes"
+fi
