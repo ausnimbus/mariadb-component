@@ -2,8 +2,13 @@
 
 source /opt/app-root/etc/mariadb_environment
 
-envsubst < /opt/app-root/templates/my-base.cnf.template > /opt/app-root/etc/my.cnf.d/base.cnf
-envsubst < /opt/app-root/templates/my-paas.cnf.template > /opt/app-root/etc/my.cnf.d/paas.cnf
+#envsubst < /opt/app-root/templates/my-base.cnf.template > /opt/app-root/etc/my.cnf.d/base.cnf
+#envsubst < /opt/app-root/templates/my-paas.cnf.template > /opt/app-root/etc/my.cnf.d/paas.cnf
 envsubst < /opt/app-root/templates/my-tuning.cnf.template > /opt/app-root/etc/my.cnf.d/tuning.cnf
+
+#rm -f /etc/mysql/conf.d/*
+#envsubst < /opt/app-root/templates/my-base.cnf.template > /etc/mysql/conf.d/base.cnf
+#envsubst < /opt/app-root/templates/my-paas.cnf.template > /etc/mysql/conf.d/paas.cnf
+#envsubst < /opt/app-root/templates/my-tuning.cnf.template > /etc/mysql/conf.d/tuning.cnf
 
 exec docker-entrypoint.sh mysqld
