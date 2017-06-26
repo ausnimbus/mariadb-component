@@ -11,10 +11,8 @@ if [[ -z "$MYSQL_ROOT_PASSWORD" ]]; then
   export MYSQL_RANDOM_ROOT_PASSWORD="yes"
 fi
 
-export MYSQL_DEFAULTS_FILE=${MYSQL_DEFAULTS_FILE:-/opt/app-root/etc/my.cnf}
 export MYSQL_BINLOG_FORMAT=${MYSQL_BINLOG_FORMAT:-STATEMENT}
 export MYSQL_LOWER_CASE_TABLE_NAMES=${MYSQL_LOWER_CASE_TABLE_NAMES:-0}
-export MYSQL_MAX_CONNECTIONS=${MYSQL_MAX_CONNECTIONS:-151}
 export MYSQL_FT_MIN_WORD_LEN=${MYSQL_FT_MIN_WORD_LEN:-4}
 export MYSQL_FT_MAX_WORD_LEN=${MYSQL_FT_MAX_WORD_LEN:-20}
 export MYSQL_AIO=${MYSQL_AIO:-1}
@@ -29,12 +27,16 @@ if [ -z "${MEMORY_LIMIT_IN_BYTES:-}" ]; then
     innodb_buffer_pool_size='32M'
     innodb_log_file_size='8M'
     innodb_log_buffer_size='8M'
+    max_connections='16'
 else
-    key_buffer_size="$(python -c "print(int((${MEMORY_LIMIT_IN_BYTES}/(1024*1024))*0.1))")M"
-    read_buffer_size="$(python -c "print(int((${MEMORY_LIMIT_IN_BYTES}/(1024*1024))*0.05))")M"
-    innodb_buffer_pool_size="$(python -c "print(int((${MEMORY_LIMIT_IN_BYTES}/(1024*1024))*0.5))")M"
-    innodb_log_file_size="$(python -c "print(int((${MEMORY_LIMIT_IN_BYTES}/(1024*1024))*0.15))")M"
-    innodb_log_buffer_size="$(python -c "print(int((${MEMORY_LIMIT_IN_BYTES}/(1024*1024))*0.15))")M"
+    # memory section
+    key_buffer_size=$(( $MEMORY_LIMIT * 9 / 100 ))M
+    read_buffer_size=$(( $MEMORY_LIMIT * 5 / 100 ))M
+    innodb_buffer_pool_size=$(( $MEMORY_LIMIT * 45 / 100 ))M
+    innodb_log_file_size=$(( $MEMORY_LIMIT * 13 / 100 ))M
+    innodb_log_buffer_size=$(( $MEMORY_LIMIT * 13 / 100 ))M
+    #/ memory section
+    max_connections=$(( $MEMORY_LIMIT / 512 ))
 fi
 
 export MYSQL_KEY_BUFFER_SIZE=${MYSQL_KEY_BUFFER_SIZE:-$key_buffer_size}
@@ -42,4 +44,4 @@ export MYSQL_READ_BUFFER_SIZE=${MYSQL_READ_BUFFER_SIZE:-$read_buffer_size}
 export MYSQL_INNODB_BUFFER_POOL_SIZE=${MYSQL_INNODB_BUFFER_POOL_SIZE:-$innodb_buffer_pool_size}
 export MYSQL_INNODB_LOG_FILE_SIZE=${MYSQL_INNODB_LOG_FILE_SIZE:-$innodb_log_file_size}
 export MYSQL_INNODB_LOG_BUFFER_SIZE=${MYSQL_INNODB_LOG_BUFFER_SIZE:-$innodb_log_buffer_size}
-
+export MYSQL_MAX_CONNECTIONS=${MYSQL_MAX_CONNECTIONS:-$max_connections}
