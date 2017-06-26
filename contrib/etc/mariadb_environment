@@ -30,11 +30,11 @@ if [ -z "${MEMORY_LIMIT_IN_BYTES:-}" ]; then
     max_connections='16'
 else
     # memory section
-    key_buffer_size=$(( $MEMORY_LIMIT * 9 / 100 ))M
-    read_buffer_size=$(( $MEMORY_LIMIT * 5 / 100 ))M
-    innodb_buffer_pool_size=$(( $MEMORY_LIMIT * 45 / 100 ))M
-    innodb_log_file_size=$(( $MEMORY_LIMIT * 13 / 100 ))M
-    innodb_log_buffer_size=$(( $MEMORY_LIMIT * 13 / 100 ))M
+    key_buffer_size=$(( $MEMORY_LIMIT * 8 / 100 ))M
+    read_buffer_size=$(( $MEMORY_LIMIT * 4 / 100 ))M
+    innodb_buffer_pool_size=$(( $MEMORY_LIMIT * 44 / 100 ))M
+    innodb_log_file_size=$(( $MEMORY_LIMIT * 12 / 100 ))M
+    innodb_log_buffer_size=$(( $MEMORY_LIMIT * 12 / 100 ))M
     #/ memory section
     max_connections=$(( $MEMORY_LIMIT / 512 ))
 fi
