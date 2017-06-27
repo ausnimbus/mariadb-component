@@ -44,8 +44,8 @@ COPY ./component/bin/ /usr/bin/
 
 LABEL io.openshift.expose-services="3306:tcp" \
     io.openshift.tags="component,mariadb"
-RUN apt-get update && apt-get install -y gettext-base &&\
-    cat /opt/app-root/etc/my.cnf > /etc/mysql/my.cnf
+    
+RUN apt-get update && apt-get install -y gettext-base
 
 # </template>
 # <post>

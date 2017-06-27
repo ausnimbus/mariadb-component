@@ -11,6 +11,9 @@ if [[ -z "$MYSQL_ROOT_PASSWORD" ]]; then
   export MYSQL_RANDOM_ROOT_PASSWORD="yes"
 fi
 
+# MySQL config
+export MYSQL_HOME=${MYSQL_HOME:-"/opt/app-root/etc/mysqld/"}
+
 export MYSQL_BINLOG_FORMAT=${MYSQL_BINLOG_FORMAT:-STATEMENT}
 export MYSQL_LOWER_CASE_TABLE_NAMES=${MYSQL_LOWER_CASE_TABLE_NAMES:-0}
 export MYSQL_FT_MIN_WORD_LEN=${MYSQL_FT_MIN_WORD_LEN:-4}
@@ -21,7 +24,7 @@ export MYSQL_TABLE_OPEN_CACHE=${MYSQL_TABLE_OPEN_CACHE:-400}
 export MYSQL_SORT_BUFFER_SIZE=${MYSQL_SORT_BUFFER_SIZE:-256K}
 
 # Auto-tuning
-if [ -z "${MEMORY_LIMIT_IN_BYTES:-}" ]; then
+if [ -z "${MEMORY_LIMIT:-}" ]; then
     key_buffer_size='32M'
     read_buffer_size='8M'
     innodb_buffer_pool_size='32M'
@@ -37,6 +40,8 @@ else
     innodb_log_buffer_size=$(( $MEMORY_LIMIT * 12 / 100 ))M
     #/ memory section
     max_connections=$(( $MEMORY_LIMIT / 512 ))
+    [[ $max_connections -le 16 ]] && max_connections=16
+    [[ $max_connections -gt 256 ]] && max_connections=256
 fi
 
 export MYSQL_KEY_BUFFER_SIZE=${MYSQL_KEY_BUFFER_SIZE:-$key_buffer_size}
