@@ -44,8 +44,12 @@ COPY ./component/bin/ /usr/bin/
 
 LABEL io.openshift.expose-services="3306:tcp" \
     io.openshift.tags="component,mariadb"
-    
-RUN apt-get update && apt-get install -y gettext-base
+
+RUN apt-get update && apt-get install -y gettext-base && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /var/lib/mysqld && \
+    chown -R $USER:0 /var/lib/mysqld && \
+    chmod -R 777 /var/lib/mysqld
 
 # </template>
 # <post>

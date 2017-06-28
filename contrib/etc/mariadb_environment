@@ -12,41 +12,52 @@ if [[ -z "$MYSQL_ROOT_PASSWORD" ]]; then
 fi
 
 # MySQL config
-export MYSQL_HOME=${MYSQL_HOME:-"/opt/app-root/etc/mysqld/"}
+export MYSQL_DEFAULTS_FILE=${MYSQL_DEFAULTS_FILE:-"/opt/app-root/etc/mysqld/my.cnf"}
 
-export MYSQL_BINLOG_FORMAT=${MYSQL_BINLOG_FORMAT:-STATEMENT}
+# MySQL Configuration
+export MYSQL_MAX_ALLOWED_PACKET=${MYSQL_MAX_ALLOWED_PACKET:-200M}
+export MYSQL_TABLE_OPEN_CACHE=${MYSQL_TABLE_OPEN_CACHE:-2000}
+
 export MYSQL_LOWER_CASE_TABLE_NAMES=${MYSQL_LOWER_CASE_TABLE_NAMES:-0}
 export MYSQL_FT_MIN_WORD_LEN=${MYSQL_FT_MIN_WORD_LEN:-4}
 export MYSQL_FT_MAX_WORD_LEN=${MYSQL_FT_MAX_WORD_LEN:-20}
-export MYSQL_AIO=${MYSQL_AIO:-1}
-export MYSQL_MAX_ALLOWED_PACKET=${MYSQL_MAX_ALLOWED_PACKET:-200M}
-export MYSQL_TABLE_OPEN_CACHE=${MYSQL_TABLE_OPEN_CACHE:-400}
-export MYSQL_SORT_BUFFER_SIZE=${MYSQL_SORT_BUFFER_SIZE:-256K}
 
 # Auto-tuning
 if [ -z "${MEMORY_LIMIT:-}" ]; then
-    key_buffer_size='32M'
-    read_buffer_size='8M'
-    innodb_buffer_pool_size='32M'
+  # Safe defaults
+  innodb_buffer_pool_size='32M'
+  innodb_log_file_size='8M'
+  innodb_log_buffer_size='8M'
+
+  thread_concurrency='2'
+  max_connections='16'
+else
+  innodb_buffer_pool_size=$(( $MEMORY_LIMIT * 50 / 100 ))M
+
+  if [ $MEMORY_LIMIT -gt 4096 ]; then
+    innodb_log_file_size='128M'
+    innodb_log_buffer_size='128M'
+  elif [ $MEMORY_LIMIT -gt 2048 ]; then
+    innodb_log_file_size='64M'
+    innodb_log_buffer_size='64M'
+  elif [ $MEMORY_LIMIT -gt 512 ]; then
+    innodb_log_file_size='32M'
+    innodb_log_buffer_size='32M'
+  else
     innodb_log_file_size='8M'
     innodb_log_buffer_size='8M'
-    max_connections='16'
-else
-    # memory section
-    key_buffer_size=$(( $MEMORY_LIMIT * 8 / 100 ))M
-    read_buffer_size=$(( $MEMORY_LIMIT * 4 / 100 ))M
-    innodb_buffer_pool_size=$(( $MEMORY_LIMIT * 44 / 100 ))M
-    innodb_log_file_size=$(( $MEMORY_LIMIT * 12 / 100 ))M
-    innodb_log_buffer_size=$(( $MEMORY_LIMIT * 12 / 100 ))M
-    #/ memory section
-    max_connections=$(( $MEMORY_LIMIT / 512 ))
-    [[ $max_connections -le 16 ]] && max_connections=16
-    [[ $max_connections -gt 256 ]] && max_connections=256
+  fi
+
+  thread_concurrency=$((CPU_CORES * 2))
+
+  # 16 max connections per 512MB
+  max_connections=$(( $MEMORY_LIMIT / 512 * 16 ))
+  [[ $max_connections -le 16 ]] && max_connections=16
+  [[ $max_connections -gt 256 ]] && max_connections=256
 fi
 
-export MYSQL_KEY_BUFFER_SIZE=${MYSQL_KEY_BUFFER_SIZE:-$key_buffer_size}
-export MYSQL_READ_BUFFER_SIZE=${MYSQL_READ_BUFFER_SIZE:-$read_buffer_size}
 export MYSQL_INNODB_BUFFER_POOL_SIZE=${MYSQL_INNODB_BUFFER_POOL_SIZE:-$innodb_buffer_pool_size}
 export MYSQL_INNODB_LOG_FILE_SIZE=${MYSQL_INNODB_LOG_FILE_SIZE:-$innodb_log_file_size}
 export MYSQL_INNODB_LOG_BUFFER_SIZE=${MYSQL_INNODB_LOG_BUFFER_SIZE:-$innodb_log_buffer_size}
+export MYSQL_THREAD_COCURRENCY=${MYSQL_THREAD_COCURRENCY:-$thread_concurrency}
 export MYSQL_MAX_CONNECTIONS=${MYSQL_MAX_CONNECTIONS:-$max_connections}

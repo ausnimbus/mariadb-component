@@ -11,7 +11,7 @@ VERSION=${VERSION-"latest"}
 
 VERSION_COMMAND="mysqld --version"
 
-CONTAINER_ARGS="-e MYSQL_ROOT_PASSWORD=ausnimbus -e MYSQL_DATABASE=test -e MYSQL_USER=test -e MYSQL_PASSWORD=test"
+CONTAINER_ARGS="--user=root -e MYSQL_ROOT_PASSWORD=ausnimbus -e MYSQL_DATABASE=test -e MYSQL_USER=test -e MYSQL_PASSWORD=test"
 
 extra_tests() {
 
@@ -19,7 +19,6 @@ extra_tests() {
   sleep 60
 
   info "Testing MySQL set"
-  #container_exec "mysql --host $(container_ip) -utest -ptest test -e 'CREATE TABLE tbl (col1 VARCHAR(20), col2 VARCHAR(20))';"
   container_exec "echo 'CREATE TABLE tbl (col1 VARCHAR(20), col2 VARCHAR(20));' | mysql --host $(container_ip) -utest -ptest test"
 
   info "Testing MySQL insert"
