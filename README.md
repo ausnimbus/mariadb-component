@@ -1,10 +1,8 @@
-# AusNimbus MariaDB *WIP*
+# AusNimbus Component for MariaDB *WIP* [![Build Status](https://travis-ci.org/ausnimbus/mariadb-component.svg?branch=master)](https://travis-ci.org/ausnimbus/mariadb-component) [![Docker Repository on Quay](https://quay.io/repository/ausnimbus/mariadb-component/status "Docker Repository on Quay")](https://quay.io/repository/ausnimbus/mariadb-component)
 
-[![Build Status](https://travis-ci.org/ausnimbus/mariadb-component.svg?branch=master)](https://travis-ci.org/ausnimbus/mariadb-component)
-[![Docker Repository on Quay](https://quay.io/repository/ausnimbus/mariadb-component/status "Docker Repository on Quay")](https://quay.io/repository/ausnimbus/mariadb-component)
+[![MariaDB](https://user-images.githubusercontent.com/2239920/27714621-613923b8-5d75-11e7-87fc-2cbd6fdc0db8.jpg)](https://www.ausnimbus.com.au/)
 
-This repository contains the source for deploying [MariaDB](https://www.ausnimbus.com.au/instant-apps/mariadb/)
-on [AusNimbus](https://www.ausnimbus.com.au/).
+The [AusNimbus](https://www.ausnimbus.com.au/) component for [MariaDB](https://www.ausnimbus.com.au/instant-apps/mariadb/). 
 
 ## Environment Variables
 

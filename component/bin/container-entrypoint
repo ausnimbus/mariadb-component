@@ -1,4 +1,10 @@
 #!/bin/bash -eu
 
 source /opt/app-root/etc/mariadb_environment
-exec docker-entrypoint.sh mysqld
+
+# Process templates
+for file in $(find /opt/app-root/etc/ -name "*.template"); do
+  envsubst < $file > ${file%%.template}
+done
+
+exec docker-entrypoint.sh mysqld --defaults-file=$MYSQL_DEFAULTS_FILE --verbose
