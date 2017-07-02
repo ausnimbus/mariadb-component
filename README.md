@@ -1,21 +1,39 @@
-# AusNimbus Component for MariaDB *WIP* [![Build Status](https://travis-ci.org/ausnimbus/mariadb-component.svg?branch=master)](https://travis-ci.org/ausnimbus/mariadb-component) [![Docker Repository on Quay](https://quay.io/repository/ausnimbus/mariadb-component/status "Docker Repository on Quay")](https://quay.io/repository/ausnimbus/mariadb-component)
+# AusNimbus Component for MariaDB [![Build Status](https://travis-ci.org/ausnimbus/mariadb-component.svg?branch=master)](https://travis-ci.org/ausnimbus/mariadb-component) [![Docker Repository on Quay](https://quay.io/repository/ausnimbus/mariadb-component/status "Docker Repository on Quay")](https://quay.io/repository/ausnimbus/mariadb-component)
 
-[![MariaDB](https://user-images.githubusercontent.com/2239920/27714621-613923b8-5d75-11e7-87fc-2cbd6fdc0db8.jpg)](https://www.ausnimbus.com.au/)
+[![MariaDB](https://user-images.githubusercontent.com/2239920/27766273-63d98028-5f0e-11e7-97cf-bccf24e50086.jpg)](https://www.ausnimbus.com.au/)
 
-The [AusNimbus](https://www.ausnimbus.com.au/) component for [MariaDB](https://www.ausnimbus.com.au/instant-apps/mariadb/). 
+The [AusNimbus](https://www.ausnimbus.com.au/) component for [MariaDB](https://www.ausnimbus.com.au/instant-apps/mariadb/).
 
 ## Environment Variables
 
-The following environment variables are available to configure your MariaDB instance:
+- **MYSQL_ROOT_PASSWORD** (REQUIRED)
 
-- **MYSQL_ROOT_PASSWORD**
-  This variable is mandatory and specifies the password that will be set for the MariaDB root superuser account.
+  Specifies the password that will be set for the MariaDB root superuser account.
 
 - **MYSQL_DATABASE**
-  This variable is optional and allows you to specify the name of a database to be created on image startup. If a user/password was supplied (see below) then that user will be granted superuser access (corresponding to GRANT ALL) to this database.
+
+  Specify the name of a database to be created on startup. If a user/password was supplied then that user will be granted superuser access (corresponding to GRANT ALL) to this database.
 
 - **MYSQL_USER, MYSQL_PASSWORD**
-  This user will be granted superuser permissions for the database specified by the `MYSQL_DATABASE` variable. Both variables are required for a user to be created.
+
+  Specify the user that will be granted superuser permissions for the database specified by the `MYSQL_DATABASE` variable.
+
+  Both variables are required for a user to be created.
+
+The MariaDB component is automatically tuned based on your container size. The following variables map to their corresponding `my.cnf`:
+
+NAME                            | Default
+--------------------------------|-------------
+MYSQL_MAX_ALLOWED_PACKET        | 200M
+MYSQL_TABLE_OPEN_CACHE          | 2000
+MYSQL_LOWER_CASE_TABLE_NAMES    | 0
+MYSQL_FT_MIN_WORD_LEN           | 4
+MYSQL_FT_MAX_WORD_LEN           | 20
+MYSQL_INNODB_BUFFER_POOL_SIZE   | autotuned
+MYSQL_INNODB_LOG_FILE_SIZE      | autotuned
+MYSQL_INNODB_LOG_BUFFER_SIZE    | autotuned
+MYSQL_THREAD_COCURRENCY         | autotuned
+MYSQL_MAX_CONNECTIONS           | autotuned
 
 ## Versions
 
