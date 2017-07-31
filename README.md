@@ -4,21 +4,34 @@
 
 The [AusNimbus](https://www.ausnimbus.com.au/) component for [MariaDB](https://www.ausnimbus.com.au/instant-apps/mariadb/).
 
-## Environment Variables
+This document describes the behaviour and environment configuration when running MariaDB on AusNimbus.
 
-- **MYSQL_ROOT_PASSWORD** (REQUIRED)
+## Table of Contents
 
-  Specifies the password that will be set for the MariaDB root superuser account.
+- [Runtime Environments](#runtime-environments)
+- [Environment Configuration](#environment-configuration)
+- [Advanced](#advanced)
+  - [Auto Tuning](#auto-tuning)
 
-- **MYSQL_DATABASE**
+## Runtime Environments
 
-  Specify the name of a database to be created on startup. If a user/password was supplied then that user will be granted superuser access (corresponding to GRANT ALL) to this database.
+AusNimbus supports the latest stable release for MariaDB.
 
-- **MYSQL_USER, MYSQL_PASSWORD**
+The currently supported versions are `10.1`
 
-  Specify the user that will be granted superuser permissions for the database specified by the `MYSQL_DATABASE` variable.
+## Environment Configuration
 
-  Both variables are required for a user to be created.
+The following environment variables are available for you to configure your MariaDB environment:
+
+NAME                       | Description
+---------------------------|-------------
+MYSQL_ROOT_PASSWORD        | Specifies the password that will be set for the MariaDB root superuser account. (REQUIRED)
+MYSQL_DATABASE             | Specify the name of a database to be created on startup. If a user/password was supplied then that user will be granted superuser access (corresponding to GRANT ALL) to this database.
+MYSQL_USER, MYSQL_PASSWORD |   Specify the user that will be granted superuser permissions for the database specified by the `MYSQL_DATABASE` variable. Both variables are required for a user to be created.
+
+## Advanced
+
+### Auto Tuning
 
 The MariaDB component is automatically tuned based on your container size. The following variables map to their corresponding `my.cnf`:
 
@@ -34,9 +47,3 @@ MYSQL_INNODB_LOG_FILE_SIZE      | autotuned
 MYSQL_INNODB_LOG_BUFFER_SIZE    | autotuned
 MYSQL_THREAD_COCURRENCY         | autotuned
 MYSQL_MAX_CONNECTIONS           | autotuned
-
-## Versions
-
-The versions currently supported are:
-
-- 10.1
