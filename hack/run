@@ -4,7 +4,7 @@ NAME="mariadb"
 DISPLAY_NAME="Mariadb"
 TYPE="component"
 VARIANTS=${VARIANTS:-"default"}
-VERSIONS=${VERSIONS:-"10.1"}
+VERSIONS=${VERSIONS:-"10.1,10.2"}
 
 DOCKER_PUSH=${DOCKER_PUSH:-"false"}
 
