@@ -27,4 +27,4 @@ if [ -f /var/lib/mysql/ibdata1 ]; then
   fi
 fi
 
-exec docker-entrypoint.sh mysqld --defaults-file=$MYSQL_DEFAULTS_FILE --verbose
+exec docker-entrypoint.sh mysqld "$@" --defaults-file=$MYSQL_DEFAULTS_FILE --verbose
