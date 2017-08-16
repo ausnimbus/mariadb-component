@@ -11,7 +11,7 @@ VERSION=${VERSION-"latest"}
 
 VERSION_COMMAND="mysqld --version"
 
-CONTAINER_ARGS="--user=root -e MYSQL_ROOT_PASSWORD=ausnimbus -e MYSQL_DATABASE=test -e MYSQL_USER=test -e MYSQL_PASSWORD=test"
+CONTAINER_ARGS="--user=root -e MYSQL_ROOT_PASSWORD=ausnimbus -e MYSQL_DATABASE=test -e MYSQL_USER=test -e MYSQL_PASSWORD=test -e POD_NAMESPACE=ausnimbus"
 
 extra_tests() {
 
