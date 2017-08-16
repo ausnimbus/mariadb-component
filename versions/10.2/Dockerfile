@@ -3,15 +3,15 @@
 #
 # DO NOT EDIT IT DIRECTLY.
 #
-FROM mariadb:10.1
+FROM mariadb:10.2
 # <pre>
 
 MAINTAINER AusNimbus <support@ausnimbus.com.au>
 
-LABEL summary="Platform for running Mariadb 10.1 applications" \
+LABEL summary="Platform for running Mariadb 10.2 applications" \
       maintainer="AusNimbus <support@ausnimbus.com.au>" \
-      io.k8s.description="Platform for running Mariadb 10.1 applications" \
-      io.k8s.display-name="Mariadb 10.1"
+      io.k8s.description="Platform for running Mariadb 10.2 applications" \
+      io.k8s.display-name="Mariadb 10.2"
 
 ENV USER=999 \
     HOME=/opt/app-root/src
