@@ -17,7 +17,7 @@ This document describes the behaviour and environment configuration when running
 
 AusNimbus supports the latest stable release for MariaDB.
 
-The currently supported versions are `10.1`
+The currently supported versions are `10.1` and `10.2`
 
 ## Environment Configuration
 
@@ -47,3 +47,15 @@ MYSQL_INNODB_LOG_FILE_SIZE      | autotuned
 MYSQL_INNODB_LOG_BUFFER_SIZE    | autotuned
 MYSQL_THREAD_COCURRENCY         | autotuned
 MYSQL_MAX_CONNECTIONS           | autotuned
+
+### Galera Cluster
+
+The `POD_NAMESPACE` environment variable is required to be set for the `peer-finder` eg:
+
+```yaml
+- name: POD_NAMESPACE
+  valueFrom:
+    fieldRef:
+      apiVersion: v1
+      fieldPath: metadata.namespace
+```

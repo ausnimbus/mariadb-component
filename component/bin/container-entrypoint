@@ -7,4 +7,24 @@ for file in $(find /opt/app-root/etc/ -name "*.template"); do
   envsubst < $file > ${file%%.template}
 done
 
+# Run Galera auto-discovery on Kubernetes
+if hash peer-finder 2>/dev/null; then
+  peer-finder -on-start=/opt/galera/on-start.sh -service="${GALERA_SERVICE:-galera}"
+fi
+
+# Run Galera auto-recovery
+if [ -f /var/lib/mysql/ibdata1 ]; then
+  echo "Galera - Determining recovery position..."
+  set +e
+  start_pos_opt=$(/opt/galera/galera-recovery.sh "${@:2}")
+  set -e
+  if [ $? -eq 0 ]; then
+    echo "Galera recovery position: $start_pos_opt"
+    set -- "$@" $start_pos_opt
+  else
+    echo "FATAL - Galera recovery failed!"
+    exit 1
+  fi
+fi
+
 exec docker-entrypoint.sh mysqld --defaults-file=$MYSQL_DEFAULTS_FILE --verbose

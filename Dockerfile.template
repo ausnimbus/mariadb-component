@@ -1,8 +1,13 @@
 LABEL io.openshift.expose-services="3306:tcp" \
     io.openshift.tags="component,%NAME%"
 
-RUN apt-get update && apt-get install -y gettext-base && rm -rf /var/lib/apt/lists/*
-
-RUN mkdir -p /var/lib/mysqld && \
+RUN set -x && \
+    apt-get update && apt-get install -y --no-install-recommends gettext-base ca-certificates wget dnsutils && \
+    rm -rf /var/lib/apt/lists/* && \
+    \
+    wget -O /usr/local/bin/peer-finder https://storage.googleapis.com/kubernetes-release/pets/peer-finder && \
+    chmod +x /usr/local/bin/peer-finder && \
+    \
+    mkdir -p /var/lib/mysqld && \
     chown -R $USER:0 /var/lib/mysqld && \
     chmod -R 777 /var/lib/mysqld
